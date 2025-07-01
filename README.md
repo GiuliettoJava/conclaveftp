@@ -24,10 +24,10 @@ A command-line tool for managing FTP projects: configure connections, browse rem
 Install the package locally in your project:
 
 ```bash
-npm install conclaveftp
+npm install -g conclaveftp
 ```
 
-*You can run commands with `npx ftcli <command>` or add it to your npm scripts.*
+*You can run commands with `ftcli <command>` or add it to your npm scripts.*
 
 ---
 
