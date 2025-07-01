@@ -21,7 +21,7 @@ A command-line tool for managing FTP projects: configure connections, browse rem
 
 ## Installation
 
-Install the package locally in your project:
+Install the package globally in your project:
 
 ```bash
 npm install -g conclaveftp
