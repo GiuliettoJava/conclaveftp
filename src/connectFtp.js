@@ -16,8 +16,7 @@ export async function connectFtp(configFTP) {
       secure: true,
       secureOptions: {
         rejectUnauthorized: false,
-        ciphers: "TLS_AES_256_GCM_SHA384",
-        //:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256",
+        ciphers: "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256",
       },
     });
     
