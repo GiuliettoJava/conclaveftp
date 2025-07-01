@@ -23,8 +23,7 @@ import { undoFunction } from "./src/restoreFuction.js";
 import { browseIgnoreList } from "./src/browseArray.js";
 
 const program = new Command();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = process.cwd();
 
 const ftpPathConfiguration = path.join(process.cwd(), "configFtp.json");
 const projectConfiguration = path.join(process.cwd(), "pathProject.json");
