@@ -4,23 +4,23 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
-import { connectFtp } from "./lib/connectFtp.js";
+import { connectFtp } from "./src/connectFtp.js";
 import {
   validationJson,
   validationFtpConfig,
   validationPathProject,
   automaticJsonIgnore
-} from "./lib/jsonValidation.js";
-import { browse, browsePathForIgnore } from "./lib/browsePathFtp.js";
-import { browseLocal } from "./lib/browsPathLocal.js";
-import { uploadDirectoryToRemotePath } from "./lib/uploadFile.js";
-import { downloadRecursiveNoBackup } from "./lib/downloadFile.js";
+} from "./src/jsonValidation.js";
+import { browse, browsePathForIgnore } from "./src/browsePathFtp.js";
+import { browseLocal } from "./src/browsPathLocal.js";
+import { uploadDirectoryToRemotePath } from "./src/uploadFile.js";
+import { downloadRecursiveNoBackup } from "./src/downloadFile.js";
 import {
   backupDirectory,
   clearRemoteDirectoryWithBackup,
-} from "./lib/backupFunction.js";
-import { undoFunction } from "./lib/restoreFuction.js";
-import { browseIgnoreList } from "./lib/browseArray.js";
+} from "./src/backupFunction.js";
+import { undoFunction } from "./src/restoreFuction.js";
+import { browseIgnoreList } from "./src/browseArray.js";
 
 const program = new Command();
 const __filename = fileURLToPath(import.meta.url);
