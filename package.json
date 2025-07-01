@@ -1,0 +1,31 @@
+{
+  "name": "conclaveftp",
+  "version": "0.0.1",
+  "description": "CLI tool to manage FTP connections, upload/download files, and handle backups.",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "ftcli": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["ftp", "cli", "upload", "backup", "ftp-client"],
+  "author": "Giulio Pisano",
+  "license": "MIt",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tuo-username/conclaveftp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tuo-username/conclaveftp/issues"
+  },
+  "homepage": "https://github.com/tuo-username/conclaveftp#readme",
+  "dependencies": {
+    "basic-ftp": "^5.0.5",
+    "commander": "^14.0.0",
+    "extract-zip": "^2.0.1",
+    "inquirer": "^12.6.3",
+    "zip-a-folder": "^3.1.9"
+  }
+}
