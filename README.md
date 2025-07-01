@@ -227,6 +227,7 @@ Then edit your local copies with your actual settings.
 **Giulio Pisano**  
 Email: giuliopisano05@gmail.com  
 [LinkedIn](https://www.linkedin.com/in/giuliopisano24)
+[GitHub](https://github.com/GiuliettoJava)
 
 ---
 
