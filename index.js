@@ -183,6 +183,10 @@ program
     const finalPath = options.path
       ? path.resolve(__dirname, options.path)
       : configProject.buildPath == "" ? __dirname : path.resolve(__dirname, configProject.buildPath);
+    if(!fs.existsSync(finalPath)){
+      console.error(`❌ The path "${finalPath}" doesn't exist`);
+      process.exit();
+    }
     let client;
     try {
       client = await connectFtp(configFTP);
