@@ -58,7 +58,8 @@ export async function backupDirectory(
 
 export async function clearRemoteDirectoryWithBackup(
   client,
-  projectConfiguration
+  projectConfiguration, 
+  doubleAllow = true
 ) {
   const configPath = JSON.parse(fs.readFileSync(projectConfiguration, "utf8"));
   const targetPath = configPath.pathProject;
@@ -79,6 +80,8 @@ export async function clearRemoteDirectoryWithBackup(
     return;
   }
 
+
+  if (doubleAllow){
   let StringConferma = randomString(6);
   const { confermFromUser } = await inquirer.prompt([
     {
@@ -90,7 +93,7 @@ export async function clearRemoteDirectoryWithBackup(
   if (confermFromUser != StringConferma) {
     console.log("❌ Operation cancelled.");
     return;
-  }
+  }}
 
   const { doBackup } = await inquirer.prompt([
     {

@@ -176,6 +176,7 @@ program
   .command("push")
   .description("Upload your project to the configured folder. Optionally, specify a path from which to upload files with -p <pathname>.")
   .option("-p, --path <path>", "Folder path to push")
+  .option("-d, --delete" ,"delete the directory before push")
   .action(async (options) => {
     await validationFtpConfig(configFTP);
     await validationPathProject(configProject);
@@ -186,9 +187,11 @@ program
       console.error(`❌ The path "${finalPath}" doesn't exist`);
       process.exit();
     }
+    let deletePath = options.delete ? true : false;
     let client;
     try {
       client = await connectFtp(configFTP);
+      if(deletePath)  await clearRemoteDirectoryWithBackup(client, projectConfiguration , false) ;
       await uploadDirectoryToRemotePath(client, finalPath, configProject, configFTP);
     } catch (err) {
       console.error("❌ Error during push:", err.message);
