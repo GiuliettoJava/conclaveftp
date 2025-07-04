@@ -125,19 +125,24 @@ ftcli edbackupignore
 ```
 
 ---
-
 ### `push`
 
-Upload project files to the remote server.
+Upload your project files to the remote FTP server.
 
 ```bash
-ftcli push [-p <path>]
+ftcli push [-p <path>] [--delete]
 ```
 
-- If `-p` option is omitted, uploads the configured build path or current directory.
-- Validates FTP and project config before upload.
+#### Options
 
----
+- `-p, --path <path>`  
+Optional. Specify the local folder to upload.  
+If omitted, it will use the configured `buildPath` from the project configuration, or the current directory as fallback.
+
+- `-d, --delete`  
+Optional. Delete the remote directory before uploading.  
+A backup will be created automatically before deletion.
+
 
 ### `get`
 
