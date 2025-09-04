@@ -207,7 +207,7 @@ export async function saveBuildOrSrcPath(
   const dirName = path.basename(targetPath);
 
   if (isForBuild) configPath.buildPath = dirName;
-  else configPath.buildPath = dirName;
+  else configPath.sourcePath = dirName;
 
   fs.writeFileSync(
     projectConfiguration,

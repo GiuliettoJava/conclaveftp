@@ -239,8 +239,8 @@ program
       ? __dirname
       : path.resolve(__dirname, configProject.sourcePath);
     const remoteDir =
-      configProject.remoteSourcePath == ""
-        ? configProject.remoteSourcePath
+      configProject.remoteSrc == ""
+        ? configProject.remoteSrc
         : configProject.pathProject;
     if (!fs.existsSync(finalPath)) {
       console.error(`❌ The path "${finalPath}" doesn't exist`);
@@ -309,8 +309,8 @@ program
       ? path.resolve(__dirname, options.path)
       : __dirname;
     const remoteDir =
-      configProject.remoteSourcePath == ""
-        ? configProject.remoteSourcePath
+      configProject.remoteSrc == ""
+        ? configProject.remoteSrc
         : configProject.pathProject;
     let clean = options.delete ? true : false;
     let version = options.version ? options.version : null;
