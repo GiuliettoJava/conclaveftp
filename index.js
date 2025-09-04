@@ -305,10 +305,7 @@ program
     const finalPath = options.path
       ? path.resolve(__dirname, options.path)
       : __dirname;
-    const remoteDir =
-      configProject.remoteSrc == ""
-        ? configProject.remoteSrc
-        : configProject.pathProject;
+    const remoteDir = configProject.remoteSrc || configProject.pathProject;
     let clean = options.delete ? true : false;
     let version = options.version ? options.version : null;
     let client;
