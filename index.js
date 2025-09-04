@@ -239,7 +239,7 @@ program
       ? __dirname
       : path.resolve(__dirname, configProject.sourcePath);
     const remoteDir =
-      configProject.remoteSrc == ""
+      configProject.remoteSrc != ""
         ? configProject.remoteSrc
         : configProject.pathProject;
     if (!fs.existsSync(finalPath)) {
