@@ -42,13 +42,23 @@ export async function browseLocal(
 
     if (skipFiles) {
       choices.push({
-        name: "[✅] Save this path as project build",
+        name: "[⚙️✅] Save this path as project build",
         value: "__saveBuild",
         disabled: false,
       });
       choices.push({
-        name: "[🚫] Delete default build path",
+        name: "[📚✅] Save this path as project source",
+        value: "__saveSrc",
+        disabled: false,
+      });
+      choices.push({
+        name: "[⚙️🚫] Delete default build path",
         value: "__deleteBuild",
+        disabled: false,
+      });
+      choices.push({
+        name: "[📚🚫] Delete default source path",
+        value: "__deleteSrc",
         disabled: false,
       });
     }
@@ -84,12 +94,22 @@ export async function browseLocal(
     }
 
     if (selected === "__saveBuild") {
-      await saveBuildPath(projectConfiguration, currentPath);
+      await saveBuildOrSrcPath(projectConfiguration, currentPath);
       continue;
     }
 
     if (selected === "__deleteBuild") {
-      await saveBuildPath(projectConfiguration, "");
+      await saveBuildOrSrcPath(projectConfiguration, "");
+      continue;
+    }
+
+    if (selected === "__saveSrc") {
+      await saveBuildOrSrcPath(projectConfiguration, currentPath, false);
+      continue;
+    }
+
+    if (selected === "__saveSrc") {
+      await saveBuildOrSrcPath(projectConfiguration, "", false);
       continue;
     }
 
@@ -178,11 +198,16 @@ export async function resetPathIgnore(
   console.log(`✅ '${ignoreKey}' reset successfully`);
 }
 
-export async function saveBuildPath(projectConfiguration, targetPath) {
+export async function saveBuildOrSrcPath(
+  projectConfiguration,
+  targetPath,
+  isForBuild = true
+) {
   const configPath = JSON.parse(fs.readFileSync(projectConfiguration, "utf8"));
   const dirName = path.basename(targetPath);
 
-  configPath.buildPath = dirName;
+  if (isForBuild) configPath.buildPath = dirName;
+  else configPath.buildPath = dirName;
 
   fs.writeFileSync(
     projectConfiguration,
@@ -190,6 +215,18 @@ export async function saveBuildPath(projectConfiguration, targetPath) {
     "utf8"
   );
 
-  console.log(`💾 Build saved successfully! 📌 Path set: "${dirName ? dirName : process.cwd()}"`);
+  if (isForBuild)
+    console.log(
+      `💾 Build saved successfully! 📌 Path set: "${
+        dirName ? dirName : process.cwd()
+      }"`
+    );
+  else
+    console.log(
+      `💾 Source saved successfully! 📌 Path set: "${
+        dirName ? dirName : process.cwd()
+      }"`
+    );
+
   process.exit();
 }

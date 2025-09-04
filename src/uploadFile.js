@@ -3,6 +3,7 @@
 import fs from "fs";
 import path from "path";
 import { connectFtp } from "./connectFtp.js";
+import { version } from "os";
 
 export async function uploadDirectoryToRemotePath(
   client,
@@ -24,7 +25,13 @@ export async function uploadDirectoryToRemotePath(
   }
 }
 
-export async function uploadRecursive(client, localDir, remoteDir, configPath, ftpConfig = null) {
+export async function uploadRecursive(
+  client,
+  localDir,
+  remoteDir,
+  configPath,
+  ftpConfig = null
+) {
   const entries = fs.readdirSync(localDir, { withFileTypes: true });
 
   for (const entry of entries) {
@@ -56,14 +63,20 @@ export async function uploadRecursive(client, localDir, remoteDir, configPath, f
       for (let attempt = 1; attempt <= 5; attempt++) {
         try {
           await currentClient.uploadFrom(localEntryPath, remoteEntryPath);
-          console.log(`✅ File uploaded successfully: ${remoteEntryPath.split("/").pop()}`);
+          console.log(
+            `✅ File uploaded successfully: ${remoteEntryPath.split("/").pop()}`
+          );
           uploadSuccess = true;
           break;
         } catch (error) {
           lastError = error;
 
           // If client is closed and ftpConfig exists, try to reconnect
-          if (error.message.includes("Client is closed") && ftpConfig && attempt < 5) {
+          if (
+            error.message.includes("Client is closed") &&
+            ftpConfig &&
+            attempt < 5
+          ) {
             console.log(`🔄 Client closed, attempting to reconnect...`);
             try {
               currentClient = await connectFtp(ftpConfig);
@@ -76,8 +89,12 @@ export async function uploadRecursive(client, localDir, remoteDir, configPath, f
           }
 
           if (attempt < 5) {
-            console.log(`⚠️  Attempt ${attempt}/5 failed for ${remoteEntryPath.split("/").pop()}: ${error.message}. Retrying in 300ms...`);
-            await new Promise(resolve => setTimeout(resolve, 300));
+            console.log(
+              `⚠️  Attempt ${attempt}/5 failed for ${remoteEntryPath
+                .split("/")
+                .pop()}: ${error.message}. Retrying in 300ms...`
+            );
+            await new Promise((resolve) => setTimeout(resolve, 300));
           }
         }
       }
@@ -89,8 +106,13 @@ export async function uploadRecursive(client, localDir, remoteDir, configPath, f
 
       // If all attempts failed, show error but continue
       if (!uploadSuccess) {
-        console.error(`❌ Error during upload of ${remoteEntryPath.split("/").pop()} after 5 attempts: ${lastError.message}`);
+        console.error(
+          `❌ Error during upload of ${remoteEntryPath
+            .split("/")
+            .pop()} after 5 attempts: ${lastError.message}`
+        );
       }
     }
   }
 }
+

@@ -143,6 +143,26 @@ If omitted, it will use the configured `buildPath` from the project configuratio
 Optional. Delete the remote directory before uploading.  
 A backup will be created automatically before deletion.
 
+---
+### `commit`
+
+Upload your project source files to the remote FTP server.  
+
+```bash
+ftcli commit [-p <path>] [-m <message>]
+```
+
+#### Options
+
+- `-p, --path <path>`  
+  Optional. Specify the local folder to upload.  
+  If omitted, it will use the configured `sourcePath` from the project configuration, or the current directory as fallback.
+
+- `-m, --messagge <message>`  
+  Optional. Add a message to describe the commit.  
+  If omitted, the commit will be uploaded without a message.
+
+---
 
 ### `get`
 
@@ -155,6 +175,29 @@ ftcli get [-p <path>]
 - Downloads files recursively from remote path to specified local path.
 - Defaults to current directory if no path specified.
 
+---
+
+### `pull`
+
+Download your project files from the remote FTP server.  
+
+```bash
+ftcli pull [-p <path>] [-v <version>] [-d]
+```
+
+#### Options
+
+- `-p, --path <path>`  
+  Optional. Specify the local folder where files will be downloaded.  
+  If omitted, the current directory will be used.  
+
+- `-v, --version <version>`  
+  Optional. Specify the version of the project to download.  
+  If omitted, the latest version will be pulled.  
+
+- `-d, --delete`  
+  Optional. Delete the local folder before downloading.  
+  This ensures a clean copy of the project files.  
 ---
 
 ### `backup`

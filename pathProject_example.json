@@ -2,7 +2,9 @@
   "nameProject": "Your project name",
   "pathProject": "/remote/project/path",
   "backupPath": "/remote/backup/path",
+  "remoteSourcePath" : "/remote/backup/path",
   "buildPath": "./build",
+  "sourcePath" : "./src",
   "pathIgnore": [
     "node_modules",
     "dist",

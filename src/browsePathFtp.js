@@ -19,6 +19,7 @@ export async function promptUserToChoose(currentPath, list, canGoBack) {
   if (currentPath != "/") {
     choices.push({ name: "[💾] Save Directory", value: "__save" });
     choices.push({ name: "[🗄️] Save as Backup", value: "__backup" });
+    choices.push({ name: "[🖥️] Save as Source", value: "__remoteSrc" }); // <- nuova opzione
     choices.push({ name: "[➕] Create Folder", value: "__create" });
   }
 
@@ -95,15 +96,22 @@ export async function browse(client, configProject, projectConfiguration) {
             `✅ Folder "${newFolderName}" successfully created in ${currentPath}`
           );
         } catch (err) {
-          console.error(
-            `❌ Error creating folder: ${err.message}`
-          );
+          console.error(`❌ Error creating folder: ${err.message}`);
         }
         continue;
 
       case "__backup":
         if (
           await savePath(currentPath, configProject, projectConfiguration, true)
+        ) {
+          return;
+        } else {
+          continue;
+        }
+
+      case "__remoteSrc": // nuova logica per remoteSrc
+        if (
+          await savePath(currentPath, configProject, projectConfiguration, false, true)
         ) {
           return;
         } else {
@@ -130,48 +138,67 @@ export async function savePath(
   currentPath,
   configProject,
   projectConfiguration,
-  backup = false
+  backup = false,
+  remoteSrc = false // nuovo parametro
 ) {
+  let message;
+  if (remoteSrc) {
+    message = `Do you want to save \"${currentPath}\" as the remote source path?`;
+  } else if (backup) {
+    message = `Do you want to save \"${currentPath}\" as the backup path?`;
+  } else {
+    message = `Do you want to save \"${currentPath}\" as the project path?`;
+  }
+
   const { confirmSave } = await inquirer.prompt([
     {
       type: "confirm",
       name: "confirmSave",
-      message: !backup
-        ? `Do you want to save \"${currentPath}\" as the project path?`
-        : `Do you want to save \"${currentPath}\" as the backup path?`,
+      message,
       default: false,
     },
   ]);
 
+  if (!confirmSave) return false;
+
+  if (remoteSrc) {
+    configProject.remoteSrc = currentPath;
+    fs.writeFileSync(
+      projectConfiguration,
+      JSON.stringify(configProject, null, 2),
+      "utf8"
+    );
+    console.log(
+      "✅ Remote Source path: " + configProject.remoteSrc
+    );
+    return true;
+  }
+
   if (!backup) {
-    if (confirmSave) {
-      const { projectName } = await inquirer.prompt([
-        {
-          type: "input",
-          name: "projectName",
-          message: "What will be the project name?",
-        },
-      ]);
+    const { projectName } = await inquirer.prompt([
+      {
+        type: "input",
+        name: "projectName",
+        message: "What will be the project name?",
+      },
+    ]);
 
-      configProject.pathProject = currentPath;
-      configProject.nameProject = projectName;
+    configProject.pathProject = currentPath;
+    configProject.nameProject = projectName;
 
-      fs.writeFileSync(
-        projectConfiguration,
-        JSON.stringify(configProject, null, 2),
-        "utf8"
-      );
+    fs.writeFileSync(
+      projectConfiguration,
+      JSON.stringify(configProject, null, 2),
+      "utf8"
+    );
 
-      console.log(
-        "✅ Project name: " +
-          configProject.nameProject +
-          "\n📁 Project path: " +
-          configProject.pathProject
-      );
-      return true;
-    } else {
-      return false;
-    }
+    console.log(
+      "✅ Project name: " +
+        configProject.nameProject +
+        "\n📁 Project path: " +
+        configProject.pathProject
+    );
+    return true;
   } else {
     configProject.backupPath = currentPath;
     fs.writeFileSync(
@@ -189,6 +216,7 @@ export async function savePath(
     return true;
   }
 }
+
 
 export async function browsePathForIgnore(
   client,
