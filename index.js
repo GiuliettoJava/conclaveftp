@@ -238,10 +238,7 @@ program
       : configProject.sourcePath == ""
       ? __dirname
       : path.resolve(__dirname, configProject.sourcePath);
-    const remoteDir =
-      configProject.remoteSrc != ""
-        ? configProject.remoteSrc
-        : configProject.pathProject;
+    const remoteDir = configProject.remoteSrc || configProject.pathProject;
     if (!fs.existsSync(finalPath)) {
       console.error(`❌ The path "${finalPath}" doesn't exist`);
       process.exit();
