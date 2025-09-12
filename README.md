@@ -195,8 +195,8 @@ ftcli pull [-p <path>] [-v <version>] [-d]
   Optional. Specify the version of the project to download.  
   If omitted, the latest version will be pulled.  
 
-- `-d, --delete`  
-  Optional. Delete the local folder before downloading.  
+- `-nd, --nodelete`  
+  Optional. don't delete the local folder before downloading.  
   This ensures a clean copy of the project files.  
 ---
 
