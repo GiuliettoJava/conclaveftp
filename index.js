@@ -298,7 +298,7 @@ program
   )
   .option("-p, --path <path>", "Folder path to download")
   .option("-v, --version <version>", "Version to pull")
-  .option("-nd, --noDelete", "delete the directory before pull")
+  .option("--nd, --noDelete", "delete the directory before pull")
   .action(async (options) => {
     await validationFtpConfig(configFTP);
     await validationPathProject(configProject);
@@ -390,3 +390,4 @@ program
   });
 
 program.parse(process.argv);
+
