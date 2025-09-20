@@ -306,7 +306,7 @@ program
       ? path.resolve(__dirname, options.path)
       : configProject.sourcePath ? path.resolve(__dirname, configProject.sourcePath) : __dirname;
     const remoteDir =
-      configProject.remoteSrc == ""
+      configProject.remoteSrc != ""
         ? configProject.remoteSrc
         : configProject.pathProject;
     let clean = options.noDelete ? false : true;
