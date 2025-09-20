@@ -1,6 +1,6 @@
 {
   "name": "conclaveftp",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "CLI tool to manage FTP connections, upload/download files, and handle backups.",
   "main": "index.js",
   "type": "module",

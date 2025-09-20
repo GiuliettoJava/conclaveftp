@@ -80,7 +80,7 @@ export async function pullVersion(
   try {
     let remotePath;
 
-    if (version === null) {
+    if (version == null) {
       remotePath = await findLatestVersionRemote(
         client,
         remoteDir,
