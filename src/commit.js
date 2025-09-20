@@ -15,13 +15,9 @@ export async function commitSrc(
 ) {
   const tempLocalZip = "__tmpZip__";
   const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-  const latestVersion = await findLatestVersionRemote(
-    client,
-    remoteDir,
-    nameProject,
-    true
-  );
-  const version = incrementVersion(latestVersion);
+    const latestVersion = await findLatestVersionRemote(client, remoteDir, nameProject , true);
+    const version = incrementVersion(latestVersion);
+
 
   if (!fs.existsSync(srcDir)) {
     console.error(`❌ Directory ${srcDir} does not exist`);
@@ -45,15 +41,9 @@ export async function commitSrc(
   try {
     await zip(srcDir, zipLocalPath);
 
-    await uploadRecursive(
-      client,
-      tempLocalZip,
-      remoteDir,
-      {
-        pathIgnore: [],
-      },
-      configFtp
-    );
+    await uploadRecursive(client, tempLocalZip, remoteDir, {
+      pathIgnore: [],
+    }, configFtp);
 
     console.log("✅ commit completed successfully.");
   } catch (err) {
@@ -69,24 +59,19 @@ export async function commitSrc(
   }
 }
 
-export async function pullVersion(
-  client,
-  remoteDir,
-  srcDir,
-  nameProject,
-  version = null,
-  clean = false
-) {
+export async function pullVersion(client, remoteDir, srcDir, nameProject, version = null, clean = false) {
   try {
+    if (!fs.existsSync(srcDir)) {
+      fs.mkdirSync(srcDir, { recursive: true });
+    } else if (clean) {
+      fs.rmSync(srcDir, { recursive: true, force: true });
+      fs.mkdirSync(srcDir, { recursive: true });
+    }
+
     let remotePath;
 
     if (version === null) {
-      remotePath = await findLatestVersionRemote(
-        client,
-        remoteDir,
-        nameProject,
-        false
-      );
+      remotePath = await findLatestVersionRemote(client, remoteDir, nameProject, false);
       if (!remotePath) {
         console.error("❌ No commit found for this project.");
         return null;
@@ -100,17 +85,11 @@ export async function pullVersion(
       const match = list.find((item) => item.isFile && regex.test(item.name));
 
       if (!match) {
-        console.error(`❌ No commit found for version ${version}.`);
+        console.error(`❌ No backup found for version ${version}.`);
         return null;
       }
 
       remotePath = path.posix.join(remoteDir, match.name);
-    }
-    if (!fs.existsSync(srcDir)) {
-      fs.mkdirSync(srcDir, { recursive: true });
-    } else if (clean) {
-      fs.rmSync(srcDir, { recursive: true, force: true });
-      fs.mkdirSync(srcDir, { recursive: true });
     }
 
     const localZip = path.join(srcDir, path.basename(remotePath));
@@ -122,12 +101,9 @@ export async function pullVersion(
 
     fs.unlinkSync(localZip);
 
-    console.log(
-      `✅ Version ${
-        version ?? "latest"
-      } downloaded and unzipped successfully into ${srcDir}.`
-    );
+    console.log(`✅ Version ${version ?? "latest"} downloaded and unzipped successfully into ${srcDir}.`);
     return srcDir;
+
   } catch (err) {
     console.error("❌ Error while downloading/unzipping version:", err.message);
     return null;
@@ -168,7 +144,8 @@ export async function findLatestVersionRemote(
 }
 
 export function incrementVersion(version, type = "minor") {
-  if (version == null) return `${1}_${0}`;
+  if(version == null)
+    return `${1}_${0}`;
 
   if (!/^\d+_\d+$/.test(version)) {
     throw new Error(`Invalid version format: ${version}`);

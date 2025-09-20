@@ -238,7 +238,10 @@ program
       : configProject.sourcePath == ""
       ? __dirname
       : path.resolve(__dirname, configProject.sourcePath);
-        const remoteDir = configProject.remoteSrc || configProject.pathProject;
+    const remoteDir =
+      configProject.remoteSrc != ""
+        ? configProject.remoteSrc
+        : configProject.pathProject;
     if (!fs.existsSync(finalPath)) {
       console.error(`❌ The path "${finalPath}" doesn't exist`);
       process.exit();
@@ -298,18 +301,18 @@ program
   )
   .option("-p, --path <path>", "Folder path to download")
   .option("-v, --version <version>", "Version to pull")
-  .option("--nd, --noDelete", "delete the directory before pull")
+  .option("-d, --delete", "delete the directory before pull")
   .action(async (options) => {
     await validationFtpConfig(configFTP);
     await validationPathProject(configProject);
     const finalPath = options.path
       ? path.resolve(__dirname, options.path)
-      : configProject.sourcePath ? path.resolve(__dirname, configProject.sourcePath) : __dirname;
+      : __dirname;
     const remoteDir =
       configProject.remoteSrc == ""
         ? configProject.remoteSrc
         : configProject.pathProject;
-    let clean = options.noDelete ? false : true;
+    let clean = options.delete ? true : false;
     let version = options.version ? options.version : null;
     let client;
     try {
@@ -390,4 +393,3 @@ program
   });
 
 program.parse(process.argv);
-
