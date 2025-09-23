@@ -144,60 +144,65 @@ Optional. Delete the remote directory before uploading.
 A backup will be created automatically before deletion.
 
 ---
-### `commit`
 
-Upload your project source files to the remote FTP server.  
+## 🔹 `commit`
+
+Creates a zip package of your source and uploads it to the configured remote folder.  
+A new version (`Vx_y`) is created incrementally and saved with a timestamp.
 
 ```bash
 ftcli commit [-p <path>] [-m <message>]
 ```
 
-#### Options
+### Options
 
 - `-p, --path <path>`  
-  Optional. Specify the local folder to upload.  
-  If omitted, it will use the configured `sourcePath` from the project configuration, or the current directory as fallback.
+  (optional) Local folder path to upload.  
+  If omitted, it uses `sourcePath` from the configuration file, or the current folder.  
 
 - `-m, --messagge <message>`  
-  Optional. Add a message to describe the commit.  
-  If omitted, the commit will be uploaded without a message.
+  (optional) Adds a commit message (saved as `notes.txt`).  
 
 ---
 
-### `get`
+## 🔹 `get`
 
-Download the entire remote project directory.
+Recursively downloads the entire remote project folder (not the zipped versions).  
 
 ```bash
 ftcli get [-p <path>]
 ```
 
-- Downloads files recursively from remote path to specified local path.
-- Defaults to current directory if no path specified.
+### Options
+
+- `-p, --path <path>`  
+  (optional) Local folder path to save the downloaded files.  
+  Defaults to the current folder if not specified.  
 
 ---
 
-### `pull`
+## 🔹 `pull`
 
-Download your project files from the remote FTP server.  
+Downloads a specific project version (or the latest available) and extracts it into the local folder.  
 
 ```bash
-ftcli pull [-p <path>] [-v <version>] [-d]
+ftcli pull [-p <path>] [-v <version>] [--nd]
 ```
 
-#### Options
+### Options
 
 - `-p, --path <path>`  
-  Optional. Specify the local folder where files will be downloaded.  
-  If omitted, the current directory will be used.  
+  (optional) Local folder path where the version will be extracted.  
+  Defaults to `sourcePath` from the config or the current folder.  
 
 - `-v, --version <version>`  
-  Optional. Specify the version of the project to download.  
-  If omitted, the latest version will be pulled.  
+  (optional) Version number to download (`1_0`, `1_1`, etc.).  
+  Defaults to the latest available version if not specified.  
 
-- `-nd, --nodelete`  
-  Optional. don't delete the local folder before downloading.  
-  This ensures a clean copy of the project files.  
+- `--nd, --noDelete`  
+  (optional) Do not clear the folder before extraction.  
+  If not set, the target folder is cleaned (except `pathProject.json` and `configFtp.json`).  
+
 ---
 
 ### `backup`
