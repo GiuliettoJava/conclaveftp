@@ -254,7 +254,8 @@ program
         remoteDir,
         configProject.nameProject,
         options.messagge ? options.messagge : "",
-        configFTP
+        configFTP,
+        configProject.pathIgnore
       );
     } catch (err) {
       console.error("❌ Error during commit:", err.message);
@@ -388,4 +389,3 @@ program
   });
 
 program.parse(process.argv);
-
